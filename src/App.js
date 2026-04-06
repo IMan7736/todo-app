@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [input, setValue] = useState("");
+  useEffect(() => {
+  document.title = `${todos.length} tasks remaining`;
+}, [todos]);
 
   function addTodo() {
     if (input.trim() === "") return;
