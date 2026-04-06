@@ -12,9 +12,8 @@ function App() {
 
   function toggleTodo(index) {
     setTodos(todos.map((todo, i) =>
-        i === index ? { ...todo, done: !todo.done } : todo
-      )
-    );
+      i === index ? { ...todo, done: !todo.done } : todo
+    ));
   }
 
   function deleteTodo(index) {
@@ -39,7 +38,7 @@ function App() {
               style={{ textDecoration: todo.done ? "line-through" : "none", cursor: "pointer" }}
             >
               {todo.text}
-              </span>
+            </span>
             <button onClick={() => deleteTodo(index)}>Delete</button>
           </li>
         ))}
