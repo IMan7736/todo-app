@@ -10,6 +10,12 @@ function App() {
     setValue("");
   }
 
+  function toggleTodo(index) {
+    setTodos(todos.map((todo, i) =>
+      i === index ? { ...todo, done: !todo.done } : todo
+    ));
+  }
+
   function deleteTodo(index) {
     setTodos(todos.filter((_, i) => i !== index));
   }
