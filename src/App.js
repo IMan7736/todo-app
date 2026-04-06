@@ -6,14 +6,15 @@ function App() {
 
   function addTodo() {
     if (input.trim() === "") return;
-    setTodos([...todos, input]);
+    setTodos([...todos, { text: input, done: false }]);
     setValue("");
   }
 
   function toggleTodo(index) {
     setTodos(todos.map((todo, i) =>
-      i === index ? { ...todo, done: !todo.done } : todo
-    ));
+        i === index ? { ...todo, done: !todo.done } : todo
+      )
+    );
   }
 
   function deleteTodo(index) {
@@ -33,7 +34,13 @@ function App() {
       <ul>
         {todos.map((todo, index) => (
           <li key={index}>
-            {todo} <button onClick={() => deleteTodo(index)}>Delete</button>
+            <span
+              onClick={() => toggleTodo(index)}
+              style={{ textDecoration: todo.done ? "line-through" : "none", cursor: "pointer" }}
+            >
+              {todo.text}
+              </span>
+            <button onClick={() => deleteTodo(index)}>Delete</button>
           </li>
         ))}
       </ul>
