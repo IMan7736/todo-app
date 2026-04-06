@@ -3,9 +3,20 @@ import { useState, useEffect } from "react";
 function App() {
   const [todos, setTodos] = useState([]);
   const [input, setValue] = useState("");
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
-  document.title = `${todos.length} tasks remaining`;
-}, [todos]);
+    document.title = `${todos.length} tasks remaining`;
+  }, [todos]);
+
+  async function fetchTodos() {
+    setLoading(true);
+    const response = await fetch("https://jsonplaceholder.typicode.com/todos?_limit=5");
+    const data = await response.json();
+    const formatted = data.map(item => ({ text: item.title, done: item.completed }));
+    setTodos([...todos, ...formatted]);
+    setLoading(false);
+   }
 
   function addTodo() {
     if (input.trim() === "") return;
@@ -32,6 +43,9 @@ function App() {
         placeholder="Add a task..."
       />
       <button onClick={addTodo}>Add</button>
+      <button onClick={fetchTodos}>
+        {loading ? "Loading..." : "Fetch Tasks from API"}
+      </button>
 
       <ul>
         {todos.map((todo, index) => (
