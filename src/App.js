@@ -1,53 +1,54 @@
 import { useState, useEffect } from "react";
 import TodoItem from "./TodoItem";
+import "./App.css";
 
 function App() {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(() => {
+    const saved = localStorage.getItem("todos");
+    return saved ? JSON.parse(saved) : [];
+  });
   const [input, setValue] = useState("");
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     document.title = `${todos.length} tasks remaining`;
+    localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
-
-  async function fetchTodos() {
-    setLoading(true);
-    const response = await fetch("https://jsonplaceholder.typicode.com/todos?_limit=5");
-    const data = await response.json();
-    const formatted = data.map(item => ({ text: item.title, done: item.completed }));
-    setTodos([...todos, ...formatted]);
-    setLoading(false);
-   }
 
   function addTodo() {
     if (input.trim() === "") return;
-    setTodos([...todos, { text: input, done: false }]);
+    setTodos([...todos, { text: input, done: false, crack: null, warping: false }]);
     setValue("");
   }
 
-  function toggleTodo(index) {
-    setTodos(todos.map((todo, i) =>
-      i === index ? { ...todo, done: !todo.done } : todo
+  function toggleTodo(index, crackData) {
+    setTodos(prev => prev.map((todo, i) =>
+      i === index
+        ? { ...todo, done: !todo.done, crack: !todo.done ? crackData : null }
+        : todo
     ));
   }
 
   function deleteTodo(index) {
-    setTodos(todos.filter((_, i) => i !== index));
+    setTodos(prev => prev.map((todo, i) =>
+      i === index ? { ...todo, warping: true } : todo
+    ));
+    setTimeout(() => {
+      setTodos(prev => prev.filter((_, i) => i !== index));
+    }, 500);
   }
 
   return (
-    <div>
-      <h1>To-Do List</h1>
-      <input
-        value={input}
-        onChange={(e) => setValue(e.target.value)}
-        placeholder="Add a task..."
-      />
-      <button onClick={addTodo}>Add</button>
-      <button onClick={fetchTodos}>
-        {loading ? "Loading..." : "Fetch Tasks from API"}
-      </button>
-
+    <div className="app">
+      <h1>✦ To-Do</h1>
+      <div className="input-row">
+        <input
+          value={input}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder="Add a task..."
+          onKeyDown={(e) => e.key === "Enter" && addTodo()}
+        />
+        <button onClick={addTodo}>Add</button>
+      </div>
       <ul>
         {todos.map((todo, index) => (
           <TodoItem
