@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import TodoItem from "./TodoItem";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -49,15 +50,13 @@ function App() {
 
       <ul>
         {todos.map((todo, index) => (
-          <li key={index}>
-            <span
-              onClick={() => toggleTodo(index)}
-              style={{ textDecoration: todo.done ? "line-through" : "none", cursor: "pointer" }}
-            >
-              {todo.text}
-            </span>
-            <button onClick={() => deleteTodo(index)}>Delete</button>
-          </li>
+          <TodoItem
+            key={index}
+            todo={todo}
+            index={index}
+            onToggle={toggleTodo}
+            onDelete={deleteTodo}
+          />
         ))}
       </ul>
     </div>
