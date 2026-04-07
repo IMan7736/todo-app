@@ -116,7 +116,7 @@ ul {
   flex: 1;
   transition: color 0.3s;
   position: relative;
-  z-index: 2;
+  z-index: 10;
 }
 
 .todo-text.done {
@@ -130,6 +130,7 @@ ul {
   width: 100%;
   height: 100%;
   pointer-events: none;
+  opacity: 0.7;
 }
 
 .delete-btn {
@@ -141,7 +142,7 @@ ul {
   transition: color 0.2s, transform 0.2s;
   padding: 4px 8px;
   position: relative;
-  z-index: 2;
+  z-index: 10;
 }
 
 .delete-btn:hover {
